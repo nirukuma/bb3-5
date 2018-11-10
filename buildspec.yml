@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  post_build:
+    commands:
+
+      # Update the project ID in the template-configuration.json file so AWS CloudFormation can tag project resources.
+      # This replaces the tagging placeholder with the project ARN.
+      - sed -i.bak 's/\$PARTITION\$/'${PARTITION}'/g;s/\$AWS_REGION\$/'${AWS_REGION}'/g;s/\$ACCOUNT_ID\$/'${ACCOUNT_ID}'/g;s/\$PROJECT_ID\$/'${PROJECT_ID}'/g' template-configuration.json
+
+artifacts:
+  type: zip
+  files:
+    - '**/*'
+    - 'template-configuration.json'
